@@ -31,7 +31,7 @@ public:
   CDnsSeedOpts() : nThreads(96), nDnsThreads(4), nPort(53), mbox(NULL), ns(NULL), host(NULL), tor(NULL), fUseTestNet(false), fWipeBan(false), fWipeIgnore(false) {}
 
   void ParseCommandLine(int argc, char **argv) {
-    static const char *help = "Litecoin-seeder\n"
+    static const char *help = "Fastcoin-seeder\n"
                               "Usage: %s -h <host> -n <ns> [-m <mbox>] [-t <threads>] [-p <port>]\n"
                               "\n"
                               "Options:\n"
@@ -61,11 +61,11 @@ public:
         {"testnet", no_argument, &fUseTestNet, 1},
         {"wipeban", no_argument, &fWipeBan, 1},
         {"wipeignore", no_argument, &fWipeBan, 1},
-        {"help", no_argument, 0, '?'},
+        {"help", no_argument, 0, 'h'},
         {0, 0, 0, 0}
       };
       int option_index = 0;
-      int c = getopt_long(argc, argv, "h:n:m:t:p:d:o:?", long_options, &option_index);
+      int c = getopt_long(argc, argv, "h:n:m:t:p:d:o:", long_options, &option_index);
       if (c == -1) break;
       switch (c) {
         case 'h': {
@@ -113,10 +113,7 @@ public:
       }
     }
     if (host != NULL && ns == NULL) showHelp = true;
-    if (showHelp) {
-        fprintf(stderr, help, argv[0]);
-        exit(0);
-    }
+    if (showHelp) fprintf(stderr, help, argv[0]);
   }
 };
 
@@ -342,13 +339,13 @@ extern "C" void* ThreadStats(void*) {
   } while(1);
 }
 
-static const string mainnet_seeds[] = {"dnsseed.litecointools.com", "dnsseed.litecoinpool.org", "dnsseed.ltc.xurious.com", ""};
-static const string testnet_seeds[] = {"testnet-seed.litecointools.com", ""};
+static const string mainnet_seeds[] = {""};
+static const string testnet_seeds[] = {""};
 static const string *seeds = mainnet_seeds;
 
 extern "C" void* ThreadSeeder(void*) {
   if (!fTestNet){
-    db.Add(CService("kjy2eqzk4zwi5zd3.onion", 9333), true);
+    db.Add(CService("younode.onion", 9526), true);
   }
   do {
     for (int i=0; seeds[i] != ""; i++) {
